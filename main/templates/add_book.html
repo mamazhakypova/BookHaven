@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="d-flex justify-content-center align-items-center py-5">
+    <div class="container" style="max-width: 700px;">
+        <div class="form-card">
+            {% if create %}
+            <h3 class="text-center mb-4">Загрузить книгу</h3>
+            {% else %}
+            <h3 class="text-center mb-4">Редактирование книги</h3>
+            {% endif %}
+            <form action="" method="post" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label class="form-label">Название книги</label>
+                    {{ form.title }}
+                    <!-- <input type="text" name="title" class="form-control" placeholder="Введите название"> -->
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Автор</label>
+                    {{ form.autor }}
+                    <!-- <input type="text" name="author" class="form-control" placeholder="Введите автора"> -->
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Год выпуска</label>
+                    {{ form.year_of_manufacture }}
+                    <!-- <input type="number" name="year" class="form-control" placeholder="Например: 2020"> -->
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Жанр</label>
+                    {{ form.genre }}
+                </div>
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Описание</label>
+                    {{ form.description }}
+                    <!-- <textarea name="description" class="form-control" rows="4" placeholder="Краткое описание книги..."></textarea> -->
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Обложка книги</label>
+                    {{ form.image }}
+                    <!-- <input type="file" name="cover" class="form-control"> -->
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Цена</label>
+                    {{ form.price }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Валюта</label>
+                    {{ form.currency }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Файл книги (PDF/EPUB)</label>
+                    {{ form.book_pdf }}
+                    <!-- <input type="file" name="file" class="form-control"> -->
+                </div>
+
+                <button type="submit" class="btn btn-dark w-100">Сохранить</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

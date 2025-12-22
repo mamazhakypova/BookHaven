@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <main class="d-flex justify-content-center align-items-center">
+      <div class="container" style="max-width: 500px;">
+          <div class="auth-card">
+              <h3 class="text-center mb-4">Регистрация</h3>
+              <form action="" method="post">
+                  <div class="mb-3">
+                      <label class="form-label">Имя пользователя</label>
+                      {{ form.username }}
+                      {% for error in form.username.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                      <!-- <input type="text" class="form-control" name="username" placeholder="Введите имя пользователя"> -->
+                  </div>
+                  <div class="mb-3">
+                      <label class="form-label">Email</label>
+                      {{ form.email }}
+                      <!-- <input type="email" class="form-control" name="email" placeholder="Введите email"> -->
+                  </div>
+                  <div class="mb-3">
+                      <label class="form-label">Пароль</label>
+                      {{ form.password1 }}
+                      {% csrf_token %}
+                      <!-- <input type="password" class="form-control" name="password1" placeholder="Введите пароль"> -->
+                  </div>
+                  <div class="mb-3">
+                      <label class="form-label">Подтверждение пароля</label>
+                      {{ form.password2 }}
+                      <!-- <input type="password" class="form-control" name="password2" placeholder="Повторите пароль"> -->
+                  </div>
+                  <br>
+                  {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                  <button type="submit" class="btn btn-dark w-100">Создать аккаунт</button>
+              </form>
+              <p class="text-center mt-3">Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+          </div>
+      </div>
+  </main>
+
+  {% endblock %}

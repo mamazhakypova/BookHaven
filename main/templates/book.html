@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+        <div class="container py-5">
+            <div class="row">
+                <!-- Обложка книги -->
+                <div class="col-md-3 text-center">
+                    <img src="{{ book.image.url }}" alt="Название книги" class="book-cover mb-3">
+                    <a href="{{ book.book_pdf.url }}" class="btn btn-dark w-100">Скачать книгу</a>
+                </div>
+
+                <!-- Детали книги -->
+                <div class="col-md-9 position-relative">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h3><strong>{{ book.title }}</strong></h3>
+                            <p><strong>Автор: </strong>{{ book.autor }}</p>
+                            <p><strong>Год выпуска: </strong>{{ book.year_of_manufacture }}</p>
+                            <p><strong>Жанр: </strong>{{ book.genre.title }}</p>
+                            <p><strong>Загрузил: </strong>{{ book.user }}</p>
+                            <p><strong>Средняя оценка: </strong>
+                                {% for i in "12345"|make_list %}
+                                    {% if forloop.counter <= review %}
+                                        <span class="review-star"><i class="fas fa-star"></i></span>
+                                    {% else %}
+                                        <span class="review-star"><i class="far fa-star"></i></span>
+                                    {% endif %}
+                                {% endfor %}
+                                ({{ review }} / 5)
+                            </p>
+                            <p><strong>Цена: </strong>{{ book.price }} {{ book.get_currency_display }}</p>
+                        </div>
+
+                        <!-- Блок управления книгой -->
+                        {% if user == book.user or user.is_staff %}
+                        <div class="text-end">
+                            <a href="{% url 'edit_book' book.id %}" 
+                            class="btn px-3 py-2"
+                            style="background-color:#705c53; color:white; border-radius:10px;">
+                                Редактировать
+                            </a>
+
+                            <a href="{% url 'delete_book' book.id %}" 
+                            class="btn px-3 py-2"
+                            style="background-color:#b09a8b; color:white; border-radius:10px;">
+                                Удалить
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <h6 class="mt-3"><strong>Описание книги:</strong></h6>
+                    <p>{{ book.description }}</p>
+                </div>
+            </div>
+
+            <!-- Впечатления пользователей -->
+            <div class="mt-5">
+                <h4>Впечатления читателей</h4>
+                {% for comment in comments %}
+                <div class="review-card">
+                    <strong>{{ comment.user.username }}</strong> 
+                    <span class="text-muted small float-end">{{ comment.created_at|date:"d.m.Y H:i" }}</span>
+                    <br>
+                    {% for i in "12345"|make_list %}
+                        {% if forloop.counter <= comment.review %}
+                            <span class="review-star"><i class="fas fa-star"></i></span>
+                        {% else %}
+                            <span class="review-star"><i class="far fa-star"></i></span>
+                        {% endif %}
+                    {% endfor %}
+                    <p>{{ comment.comment }}</p>
+                </div>
+                {% empty %}
+                    <p>Пока нет впечатлений. Будьте первым!</p>
+                {% endfor %}
+                
+
+                <!-- Форма оставить впечатление -->
+                {% if user.is_authenticated %}
+                    {% if user_comment %}
+                    <p>Вы уже поделились впечатлением!</p>
+                    {% else %}
+                    <div class="mt-4">
+                        <h5>Оставить впечатление</h5>
+                        <form action="" method="post">
+                            <div class="mb-3">
+                                <label for="rating" class="form-label">Ваша оценка</label>
+                                {{ form_comment.review }}
+                            </div>
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="reviewText" class="form-label">Ваше впечатление</label>
+                                {{ form_comment.comment }}
+                                <!-- <textarea class="form-control" id="reviewText" rows="3"></textarea> -->
+                            </div>
+                            <button type="submit" class="btn btn-dark">Оставить впечатление</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                {% else %}
+                <p class="text-muted mt-3">Чтобы оставить впечатление, необходимо <a href="{% url 'login' %}">войти</a>!</p>
+                {% endif %}
+                <br>    
+            </div>
+        </div>
+
+
+{% endblock %}
