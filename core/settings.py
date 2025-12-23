@@ -87,6 +87,9 @@ DATABASES = {
 }
 
 
+CSRF_TRUSTED_ORIGINS = ['https://aidana.sino0on.ru', 'https://www.aidana.sino0on.ru']
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
